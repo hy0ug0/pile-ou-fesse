@@ -1,30 +1,31 @@
-import { useState, useCallback } from 'react'
-import { GameResult } from '../types'
+import type { GameResult } from '../types'
+import { useCallback, useState } from 'react'
 
-const getRandomResult = (): GameResult => {
+function getRandomResult(): GameResult {
   const isPile = Math.random() < 0.5
-  
+
   if (isPile) {
     return {
       type: 'pile',
       emoji: '🔋',
       text: 'PILE !',
-      color: '#667eea'
+      color: '#667eea',
     }
-  } else {
+  }
+  else {
     return {
       type: 'fesse',
       emoji: '🍑',
       text: 'FESSE !',
-      color: '#f093fb'
+      color: '#f093fb',
     }
   }
 }
 
-const animateFlip = async (setFlipEmoji: (emoji: string) => void): Promise<void> => {
+async function animateFlip(setFlipEmoji: (emoji: string) => void): Promise<void> {
   const flipEmojis = ['🎲', '✨', '🎰', '💫']
   let currentIndex = 0
-  
+
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       setFlipEmoji(flipEmojis[currentIndex % flipEmojis.length])
@@ -38,13 +39,14 @@ const animateFlip = async (setFlipEmoji: (emoji: string) => void): Promise<void>
   })
 }
 
-export const useGameFlip = (onResult: (result: GameResult) => void) => {
+export function useGameFlip(onResult: (result: GameResult) => void) {
   const [isFlipping, setIsFlipping] = useState(false)
   const [result, setResult] = useState<GameResult | null>(null)
   const [flipEmoji, setFlipEmoji] = useState<string>('')
 
   const flip = useCallback(async () => {
-    if (isFlipping) return
+    if (isFlipping)
+      return
 
     setIsFlipping(true)
     setFlipEmoji('🎲')
@@ -60,5 +62,3 @@ export const useGameFlip = (onResult: (result: GameResult) => void) => {
 
   return { flip, isFlipping, result, flipEmoji }
 }
-
-

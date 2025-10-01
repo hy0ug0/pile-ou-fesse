@@ -1,17 +1,18 @@
-import { useEffect, useCallback } from 'react'
-import { useStats } from '../hooks/useStats'
+import type { GameResult } from '../types'
+import { useCallback, useEffect } from 'react'
 import { useGameFlip } from '../hooks/useGameFlip'
+import { useStats } from '../hooks/useStats'
 import { GameCard } from './GameCard'
 import { Stats } from './Stats'
-import { GameResult } from '../types'
 
-export const App = () => {
+export function App() {
   const { stats, incrementPile, incrementFesse, total } = useStats()
 
   const handleResult = useCallback((result: GameResult) => {
     if (result.type === 'pile') {
       incrementPile()
-    } else {
+    }
+    else {
       incrementFesse()
     }
   }, [incrementPile, incrementFesse])
@@ -22,7 +23,7 @@ export const App = () => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === 'Space' && !isFlipping) {
         e.preventDefault()
-        flip()
+        void flip()
       }
     }
 
@@ -37,7 +38,7 @@ export const App = () => {
 
       <GameCard result={result} isFlipping={isFlipping} flipEmoji={flipEmoji} />
 
-      <button onClick={flip} disabled={isFlipping}>
+      <button type="button" onClick={() => void flip()} disabled={isFlipping}>
         Tirer !
       </button>
 
@@ -49,5 +50,3 @@ export const App = () => {
     </div>
   )
 }
-
-

@@ -4,7 +4,7 @@ interface StatsProps {
   total: number
 }
 
-export const Stats = ({ pileCount, fesseCount, total }: StatsProps) => {
+export function Stats({ pileCount, fesseCount, total }: StatsProps) {
   return (
     <div className="stats">
       <div className="stat-item">
@@ -22,5 +22,3 @@ export const Stats = ({ pileCount, fesseCount, total }: StatsProps) => {
     </div>
   )
 }
-
-

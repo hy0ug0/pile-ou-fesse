@@ -1,4 +1,4 @@
-import { GameResult } from '../types'
+import type { GameResult } from '../types'
 
 interface GameCardProps {
   result: GameResult | null
@@ -6,7 +6,7 @@ interface GameCardProps {
   flipEmoji: string
 }
 
-export const GameCard = ({ result, isFlipping, flipEmoji }: GameCardProps) => {
+export function GameCard({ result, isFlipping, flipEmoji }: GameCardProps) {
   return (
     <div className="card">
       <div className="result-container">
@@ -28,5 +28,3 @@ export const GameCard = ({ result, isFlipping, flipEmoji }: GameCardProps) => {
     </div>
   )
 }
-
-

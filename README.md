@@ -75,13 +75,9 @@ Le projet peut être déployé facilement sur :
 - **Netlify** : `pnpm build` puis déploie le dossier `dist/`
 - **GitHub Pages** : Utilise le workflow GitHub Actions
 
-Commande de build : `pnpm build`  
+Commande de build : `pnpm build`
 Dossier de sortie : `dist/`
 
 ## 📝 License
 
 Voir le fichier LICENSE
-
----
-
-Made with 💜 by Hugo

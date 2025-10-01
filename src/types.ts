@@ -9,5 +9,3 @@ export interface GameResult {
   text: string
   color: string
 }
-
-

@@ -1,33 +1,35 @@
-import { useState, useEffect } from 'react'
-import { GameStats } from '../types'
+import type { GameStats } from '../types'
+import { useEffect, useState } from 'react'
 
 const STORAGE_KEY = 'pile-ou-fesse-stats'
 
-const loadStats = (): GameStats => {
+function loadStats(): GameStats {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      return JSON.parse(stored)
+    if (stored !== null) {
+      return JSON.parse(stored) as GameStats
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error loading stats:', error)
   }
-  
+
   return {
     pileCount: 0,
-    fesseCount: 0
+    fesseCount: 0,
   }
 }
 
-const saveStats = (stats: GameStats): void => {
+function saveStats(stats: GameStats): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stats))
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error saving stats:', error)
   }
 }
 
-export const useStats = () => {
+export function useStats() {
   const [stats, setStats] = useState<GameStats>(loadStats)
 
   useEffect(() => {
@@ -46,5 +48,3 @@ export const useStats = () => {
 
   return { stats, incrementPile, incrementFesse, total }
 }
-
-
