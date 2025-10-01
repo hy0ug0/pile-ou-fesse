@@ -24,6 +24,7 @@ export default antfu({
     'dist',
     'node_modules',
     '*.config.*',
+    '.github',
   ],
 })
 
