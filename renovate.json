@@ -1,6 +1,60 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":automergeDigest",
+    ":automergePatch",
+    ":automergeMinor"
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates when CI passes",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Group React packages together",
+      "groupName": "React",
+      "matchPackagePatterns": ["^react", "^@types/react"]
+    },
+    {
+      "description": "Group Vite packages together",
+      "groupName": "Vite",
+      "matchPackagePatterns": ["^vite", "^@vitejs/"]
+    },
+    {
+      "description": "Group ESLint packages together",
+      "groupName": "ESLint",
+      "matchPackagePatterns": ["^eslint", "^@eslint", "eslint-plugin"]
+    },
+    {
+      "description": "Group TypeScript packages together",
+      "groupName": "TypeScript",
+      "matchPackageNames": ["typescript", "@types/node"]
+    },
+    {
+      "description": "Automerge devDependencies minor and patch",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": ["before 4am on Monday"]
+  },
+  "timezone": "Europe/Paris",
+  "schedule": ["after 10pm every weekday", "before 5am every weekday", "every weekend"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}v{{newMajor}}{{else}}{{#if isSingleVersion}}v{{newVersion}}{{else}}{{{newValue}}}{{/if}}{{/if}}{{/if}}"
 }
