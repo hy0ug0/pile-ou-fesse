@@ -1,35 +1,54 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    ":dependencyDashboard",
+    "config:best-practices",
     ":semanticCommits",
-    ":automergeDigest",
-    ":automergePatch",
-    ":automergeMinor"
+    ":semanticCommitTypeAll(chore)",
+    ":semanticCommitScope(deps)"
   ],
+  "timezone": "Europe/Paris",
+  "labels": ["dependencies"],
+  "dependencyDashboard": true,
+  "rangeStrategy": "bump",
+  "rebaseWhen": "behind-base-branch",
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5:00am on Monday"],
+    "automerge": true,
+    "automergeType": "pr",
+    "platformAutomerge": true
+  },
   "packageRules": [
     {
       "description": "Automerge non-major updates when CI passes",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true,
-      "automergeType": "pr",
-      "platformAutomerge": true
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "pinDigest"],
+      "matchCurrentVersion": "!/^0\\./",
+      "automerge": true
+    },
+    {
+      "description": "Require approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true
     },
     {
       "description": "Group React packages together",
       "groupName": "React",
-      "matchPackagePatterns": ["^react", "^@types/react"]
+      "matchPackageNames": ["/^react/", "/^@types/react/"]
     },
     {
       "description": "Group Vite packages together",
       "groupName": "Vite",
-      "matchPackagePatterns": ["^vite", "^@vitejs/"]
+      "matchPackageNames": ["/^vite/", "/^@vitejs//"]
     },
     {
       "description": "Group ESLint packages together",
       "groupName": "ESLint",
-      "matchPackagePatterns": ["^eslint", "^@eslint", "eslint-plugin"]
+      "matchPackageNames": ["/^eslint/", "/^@eslint/", "/eslint-plugin/"]
     },
     {
       "description": "Group TypeScript packages together",
@@ -37,24 +56,9 @@
       "matchPackageNames": ["typescript", "@types/node"]
     },
     {
-      "description": "Automerge devDependencies minor and patch",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
+      "description": "Keep pre-1.0 packages out of automerge",
+      "matchCurrentVersion": "/^0\\./",
+      "automerge": false
     }
-  ],
-  "rangeStrategy": "bump",
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true,
-    "schedule": ["before 4am on Monday"]
-  },
-  "timezone": "Europe/Paris",
-  "schedule": ["after 10pm every weekday", "before 5am every weekday", "every weekend"],
-  "prConcurrentLimit": 5,
-  "prHourlyLimit": 2,
-  "commitMessagePrefix": "chore(deps):",
-  "commitMessageAction": "update",
-  "commitMessageTopic": "{{depName}}",
-  "commitMessageExtra": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}v{{newMajor}}{{else}}{{#if isSingleVersion}}v{{newVersion}}{{else}}{{{newValue}}}{{/if}}{{/if}}{{/if}}"
+  ]
 }
